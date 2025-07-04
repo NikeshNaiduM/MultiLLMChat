@@ -1,0 +1,9 @@
+# Core web framework
+streamlit>=1.28.0
+
+# HTTP requests and JSON handling
+requests>=2.31.0
+
+# Standard library modules (included with Python)
+# json - built-in
+# time - built-in
