@@ -1,0 +1,12 @@
+# Requirements for MultiLLMChat - Ollama Chat Interface
+# Core dependencies for the Streamlit application
+
+# Web framework for the chat interface
+streamlit>=1.28.0
+
+# HTTP library for making API requests to Ollama
+requests>=2.31.0
+
+# Built-in Python modules (no installation required):
+# - json: JSON parsing and handling
+# - time: Time-related functions for delays and timestamps
