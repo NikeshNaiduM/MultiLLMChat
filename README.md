@@ -1,159 +1,109 @@
-# MultiLLMChat 🤖
+# OllamaMultiChat
 
-A sleek, modern chat interface for interacting with local Ollama models. Built with Streamlit, this application provides an intuitive way to chat with various Large Language Models running on your local machine.
+A modern, interactive chat application built with Chainlit that provides a seamless interface for chatting with local Ollama language models.
 
-## ✨ Features
+## Features
 
-- **🎯 Interactive Chat Interface**: Clean, responsive chat UI with streaming responses
-- **🔌 Live Connection Status**: Real-time monitoring of Ollama service status
-- **🎛️ Advanced Settings**: 
-  - Customizable system prompts
-  - Temperature control (0.0 - 2.0)
-  - Token limit configuration
-- **📱 Responsive Design**: Works seamlessly on desktop and mobile devices
-- **⚡ Streaming Responses**: Real-time response generation with typing indicators
-- **🗂️ Multiple Model Support**: Automatically detects and allows switching between available Ollama models
-- **💾 Chat History**: Persistent conversation history during your session
-- **🎨 Modern UI**: Custom styling with status indicators and smooth animations
+- **Dynamic Model Selection**: Automatically detects and creates chat profiles for all locally installed Ollama models
+- **Interactive Chat Settings**: Real-time configuration panel with model selection, temperature control, streaming toggle, and system prompt customization
+- **Streaming Support**: Real-time token streaming for responsive conversations
+- **Chat Profiles**: Dedicated profiles for each model with custom icons and starter prompts
+- **Toast Notifications**: User-friendly feedback for setting updates and model loading
+- **Windows Compatible**: UTF-8 safe encoding for cross-platform compatibility
 
-## 🚀 Quick Start
+## Prerequisites
 
-### Prerequisites
+- **Ollama**: Must be installed and running on your system
+  - Download from: https://ollama.com/
+  - Ensure you have at least one model installed (e.g., `ollama pull llama2`)
+- **Python 3.7+**
 
-1. **Install Ollama**: Download and install Ollama from [ollama.ai](https://ollama.ai)
-2. **Python 3.7+**: Ensure you have Python installed on your system
+## Installation
 
-### Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/NikeshNaiduM/MultiLLMChat.git
-   cd MultiLLMChat
-   ```
+1. **Clone or download the project files**
 
 2. **Install dependencies**:
    ```bash
-   pip install streamlit requests
+   pip install -r requirements.txt
    ```
 
-3. **Start Ollama service**:
+3. **Verify Ollama installation**:
    ```bash
-   ollama serve
+   ollama list
    ```
+   This should show your installed models.
 
-4. **Download a model** (if you haven't already):
+## Usage
+
+1. **Start the application**:
    ```bash
-   ollama pull llama2        # or any other model you prefer
-   ollama pull codellama     # for coding assistance
-   ollama pull mistral       # lightweight alternative
+   chainlit run OllamaMultiChat.py
    ```
 
-5. **Run the application**:
-   ```bash
-   streamlit run DeepChatWin.py
-   ```
+2. **Open your browser** and navigate to the URL shown in the terminal (typically `http://localhost:8000`)
 
-6. **Open your browser**: The app will automatically open at `http://localhost:8501`
+3. **Select a model** from the chat profiles or use the settings panel to configure:
+   - **Model**: Choose from your locally installed Ollama models
+   - **Temperature**: Control randomness (0.0 = deterministic, 1.0 = creative)
+   - **Streaming**: Enable/disable real-time token streaming
+   - **System Prompt**: Optional system-level instructions for the model
 
-## 🎮 Usage
+4. **Start chatting** with your selected model!
 
-### Basic Chat
-1. Select a model from the sidebar dropdown
-2. Type your message in the chat input at the bottom
-3. Press Enter to send and receive streaming responses
+## Chat Settings
 
-### Advanced Configuration
-- **System Prompt**: Define the AI's behavior and personality
-- **Temperature**: Control randomness (0.0 = deterministic, 2.0 = very creative)
-- **Max Tokens**: Set the maximum response length
+The application provides a comprehensive settings panel:
 
-### Chat Management
-- Use the "Clear Chat History" button to start fresh conversations
-- Chat history persists during your session but resets when you refresh
+- **Model Selection**: Switch between any locally installed Ollama models
+- **Temperature Control**: Slider from 0.0 to 1.0 for output randomness
+- **Streaming Toggle**: Enable for real-time response streaming
+- **System Prompt**: Add custom system instructions (optional)
 
-## 🛠️ Technical Details
+## Starter Prompts
 
-### Architecture
-- **Frontend**: Streamlit with custom CSS styling
-- **Backend**: Ollama API integration via HTTP requests
-- **Streaming**: Real-time response streaming with chunk processing
+Each model profile comes with built-in starter prompts:
+- **SQL Join**: "Write a SQL query to join two tables"
+- **Explain Like 5**: "Explain superconductors like I'm five years old."
 
-### API Endpoints Used
-- `GET /`: Health check for Ollama service
-- `GET /api/tags`: Fetch available models
-- `POST /api/generate`: Generate responses with streaming support
+## Troubleshooting
 
-### Configuration Options
-```python
-# Default settings (customizable via UI)
-temperature = 0.7          # Response randomness
-max_tokens = 2000         # Maximum response length
-system_prompt = "You are a helpful AI assistant."
-```
+**No models detected:**
+- Ensure Ollama is installed and running
+- Verify models are installed with `ollama list`
+- Try pulling a model: `ollama pull llama2`
 
-## 🔧 Troubleshooting
+**Connection issues:**
+- Check if Ollama service is running
+- Verify firewall settings
+- Ensure port 11434 (default Ollama port) is available
 
-### Common Issues
+**UTF-8 encoding errors:**
+- The application handles Windows UTF-8 encoding automatically
+- If issues persist, check your system locale settings
 
-**"Ollama is not running"**
-- Ensure Ollama is installed and running: `ollama serve`
-- Check if the service is accessible at `http://localhost:11434`
+## Architecture
 
-**"No models found"**
-- Download models using: `ollama pull <model-name>`
-- Verify models are available: `ollama list`
+The application consists of several key components:
 
-**Connection timeout**
-- Increase timeout in the code if needed
-- Check firewall settings
-- Ensure Ollama is running on the default port (11434)
+- **Model Detection**: Automatically scans for local Ollama models
+- **Chat Profiles**: Dynamic profile generation for each model
+- **Settings Management**: Real-time settings persistence and updates
+- **Streaming Handler**: Asynchronous token streaming for responsive chat
+- **Error Handling**: Graceful error management with user feedback
 
-**Model not found (404 error)**
-- Verify the model name is correct
-- Use `ollama list` to see available models
-- Try pulling the model again: `ollama pull <model-name>`
+## Development
 
-## 📚 Supported Models
+To modify or extend the application:
 
-Any model available in Ollama can be used with this interface. Popular options include:
+1. The main chat logic is in the `@cl.on_message` handler
+2. Model detection happens in `list_local_models()`
+3. Chat profiles are built in `build_chat_profiles()`
+4. Settings are managed in `@cl.on_settings_update`
 
-- **llama2**: Meta's Llama 2 model
-- **codellama**: Specialized for code generation
-- **mistral**: Efficient and capable model
-- **dolphin-mistral**: Fine-tuned for conversation
-- **neural-chat**: Optimized for dialogue
-- **starling-lm**: Advanced reasoning capabilities
+## Contributing
 
-## 🤝 Contributing
+Feel free to submit issues, feature requests, or pull requests to improve the application.
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+## License
 
-### Development Setup
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- [Ollama](https://ollama.ai) for providing the local LLM runtime
-- [Streamlit](https://streamlit.io) for the excellent web framework
-- The open-source community for various model implementations
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-1. Check the [Issues](https://github.com/NikeshNaiduM/MultiLLMChat/issues) page
-2. Create a new issue with detailed information
-3. Include your OS, Python version, and error messages
-
----
-
-**Made with ❤️ by [Nikesh Naidu](https://github.com/NikeshNaiduM)**
-
-*Powered by Streamlit and Ollama*
+This project is open source. Please check the license file for details.
