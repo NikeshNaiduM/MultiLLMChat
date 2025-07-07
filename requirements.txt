@@ -1,9 +1,30 @@
-# Core web framework
-streamlit>=1.28.0
+# OllamaMultiChat Requirements
 
-# HTTP requests and JSON handling
-requests>=2.31.0
+# Core dependencies for the Ollama Multi-Chat application
+# Built with Chainlit for the web interface and Ollama for local LLM support
 
-# Standard library modules (included with Python)
-# json - built-in
-# time - built-in
+# Main framework
+chainlit>=1.0.0
+
+# Additional dependencies that may be needed
+# (These are typically included with chainlit but listed for completeness)
+
+# Async support (usually included with Python 3.7+)
+asyncio
+
+# For subprocess operations (built-in Python module)
+# subprocess
+
+# Type hints support (built-in in Python 3.5+)
+# typing
+
+# Development dependencies (optional)
+# pytest>=7.0.0
+# black>=22.0.0
+# flake8>=4.0.0
+
+# Notes:
+# - Ollama must be installed separately from https://ollama.com/
+# - Python 3.7+ is required
+# - The application uses only built-in Python modules plus chainlit
+# - Chainlit handles most web interface dependencies automatically
